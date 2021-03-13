@@ -13,3 +13,5 @@ document.documentElement.addEventListener('touchmove', function(e) {
 
 // 给移动端设置 rem
 document.documentElement.style.fontSize = document.documentElement.clientWidth / 3.75 + 'px';
+// 12 * (width / 320) + "px";
+// document.documentElement.style.fontSize =  12 * (document.documentElement.clientWidth / 320) + 'px';

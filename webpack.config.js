@@ -60,6 +60,23 @@ module.exports = {
                     'sass-loader'
                 ]
             },
+            // 处理 scss
+            {
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: function() {
+                                return [autoprefixer('last 5 versions')];
+                            }
+                        }
+                    },
+                    'sass-loader'
+                ]
+            },
             {
                 test: /\.(png|ipg|jpeg|gif|ico|woff|eot|svg|ttf)/i,
                 loader: 'url-loader?limit=1024&name=img/[name]-[hash:16].[ext]'
@@ -67,6 +84,7 @@ module.exports = {
         ]
     },
     // 插件配置
+    // 可优化
     plugins: [
         new HtmlWepackPlugin({
             filename: 'index.html',

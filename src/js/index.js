@@ -2,9 +2,9 @@ import './imports';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
+import pageLoading from '../components/PageLoading';
 import { NEWS_TYPE } from '../data';
 import service from '../services';
-// import { tplReplace } from '../libs/utils';
 
 ;(function(doc) {
     const oApp = doc.querySelector('#app');
@@ -27,7 +27,7 @@ import service from '../services';
     }
     function setType(type) {
         config.type = type;
-        console.log('当前的 type: ', config.type);
+        config.pageNum = 0;
         oListWrapper.innerHTML = '';
         setNewsList();
     }
@@ -37,20 +37,21 @@ import service from '../services';
 
         if(newsData[type]) {
             // 已经请求过接口，从缓存池里拿数据
+            console.log('pool');
             renderList(newsData[type][pageNum]);
             return;
         }
-
+        console.log('request');
+        // 显示页面加载
+        oListWrapper.innerHTML = pageLoading.tpl();
         newsData[type] = await service.getNewsList(type, count);
         // 获取到的数据，调用 renderList 方法，渲染新闻列表
         // 这里为什么要异步？
         setTimeout(() => {
             // 清空之前的内容，重新渲染
             oListWrapper.innerHTML = '';
-            console.log(newsData[type][pageNum]);
             renderList(newsData[type][pageNum]);
-        })
-        console.log(newsData);
+        }, 1500)
     }
 
     function renderList(data) {

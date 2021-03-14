@@ -28,6 +28,7 @@ import service from '../services';
     function setType(type) {
         config.type = type;
         console.log('当前的 type: ', config.type);
+        oListWrapper.innerHTML = '';
         setNewsList();
     }
 
@@ -46,6 +47,7 @@ import service from '../services';
         setTimeout(() => {
             // 清空之前的内容，重新渲染
             oListWrapper.innerHTML = '';
+            console.log(newsData[type][pageNum]);
             renderList(newsData[type][pageNum]);
         })
         console.log(newsData);
@@ -78,9 +80,8 @@ import service from '../services';
         const listWrapperTpl = NewsList.wrapperTpl(82);
 
         oApp.innerHTML += (headerTpl + navBarTpl + listWrapperTpl);
-        oListWrapper = oApp.querySelector('.news-list');
         // 获取 dom 节点
-        console.log(oListWrapper);
+        oListWrapper = oApp.querySelector('.news-list');
     };
     init();
 

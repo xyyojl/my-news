@@ -5,6 +5,7 @@ import NewsList from '../components/NewsList';
 import pageLoading from '../components/PageLoading';
 import { NEWS_TYPE } from '../data';
 import service from '../services';
+import { scrollToBottom } from '../libs/utils';
 
 ;(function(doc) {
     const oApp = doc.querySelector('#app');
@@ -12,7 +13,8 @@ import service from '../services';
     const config = {
         type: 'top',
         count: 10,
-        pageNum: 0
+        pageNum: 0,
+        isLoading: false
     };
     const newsData = {};
 
@@ -24,6 +26,7 @@ import service from '../services';
 
     function bindEvent() {
         NavBar.bindEvent(setType);
+        window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false);
     }
     function setType(type) {
         config.type = type;
@@ -66,6 +69,18 @@ import service from '../services';
         // 显示图片
         NewsList.imgShow();
     };
+
+    function getMoreList() {
+        // isLoading: false 代表没有锁住，true 代表锁住了
+        if(!config.isLoading) {
+            config.isLoading = true;
+            console.log('react bottom');
+
+            setTimeout(() => {
+                config.isLoading = false;
+            },3000);
+        }
+    }
 
 
     function render() {

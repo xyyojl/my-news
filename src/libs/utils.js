@@ -29,13 +29,21 @@ function scrollToBottom(callback) {
         callback();
     }
 }
+function getItemNode(target) {
+    while(target = target.parentNode) {
+        if(target.className.split(' ')[0] === 'news-item') {
+            return target;
+        }
+    }
+}
 
 
 export {
     tplReplace,
     scrollTop,
     setPageData,
-    scrollToBottom
+    scrollToBottom,
+    getItemNode
 }
 
 

@@ -5,7 +5,7 @@ import tpl3 from './tpl/tpl3.tpl';
 import wrapperTpl from './tpl/wrapper.tpl';
 
 import './index.scss';
-import { tplReplace } from '../../libs/utils';
+import { tplReplace, getItemNode } from '../../libs/utils';
 
 export default {
     name: 'NewsList',
@@ -66,5 +66,21 @@ export default {
                 img.style.opacity = 1;
             }
         })
+    },
+    // 利用事件委托，进行事件绑定。setCurrentNews 方法作为回调函数传入
+    bindEvent(oList, setCurrentNews) {
+        oList.addEventListener('click', this._goToDetail.bind(this, setCurrentNews), false);
+    },
+    _goToDetail(setCurrentNews) {
+        // 修改 url，实现去到详情页
+        const oItem = getItemNode(arguments[1].target);
+
+        // 从 HTML 元素里面拿到数据，再作为参数，传递给 setCurrentNews
+        const options = {
+            idx: oItem.dataset.index,
+            pageNum: oItem.dataset.page
+        }
+        setCurrentNews(options);
+        window.location.href = `detail.html?path=${location.pathname}`
     }
 }

@@ -28,6 +28,7 @@ import { scrollToBottom } from '../libs/utils';
 
     function bindEvent() {
         NavBar.bindEvent(setType);
+        NewsList.bindEvent(oListWrapper, setCurrentNews);
         window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false);
     }
     function setType(type) {
@@ -97,6 +98,15 @@ import { scrollToBottom } from '../libs/utils';
                 }, 1000);
             }
         }
+    }
+
+    // 找到对应的数据，并存储到 localStorage
+    function setCurrentNews(options) {
+        // 拿到 idx, pageNum，从数据里面快速找到对应的数据
+        const { idx, pageNum } = options;
+        const currentNews = newsData[config.type][pageNum][idx];
+        localStorage.setItem('currentNews', JSON.stringify(currentNews));
+
     }
 
 

@@ -1,5 +1,6 @@
 import './imports';
 import NewsList from '../components/NewsList';
+import NoDataTip from '../components/NoDataTip';
 import Header from '../components/Header';
 
 ;(function(doc){
@@ -28,7 +29,7 @@ import Header from '../components/Header';
             renderList(followedList);
         } else {
             // 没有数据，显示提示。使用 NoDataTip 组件
-            
+            oApp.innerHTML += (headerTpl + NoDataTip.tpl());
         }
 
     };

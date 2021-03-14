@@ -3,13 +3,15 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
 import pageLoading from '../components/PageLoading';
+import MoreLoading from '../components/MoreLoading';
 import { NEWS_TYPE } from '../data';
 import service from '../services';
 import { scrollToBottom } from '../libs/utils';
 
-;(function(doc) {
+; (function (doc) {
     const oApp = doc.querySelector('#app');
     let oListWrapper = null;
+    let t = null;
     const config = {
         type: 'top',
         count: 10,
@@ -31,6 +33,8 @@ import { scrollToBottom } from '../libs/utils';
     function setType(type) {
         config.type = type;
         config.pageNum = 0;
+        // 恢复为默认
+        config.isLoading = false;
         oListWrapper.innerHTML = '';
         setNewsList();
     }
@@ -38,7 +42,7 @@ import { scrollToBottom } from '../libs/utils';
     async function setNewsList() {
         const { type, count, pageNum } = config;
 
-        if(newsData[type]) {
+        if (newsData[type]) {
             // 已经请求过接口，从缓存池里拿数据
             console.log('pool');
             renderList(newsData[type][pageNum]);
@@ -64,7 +68,10 @@ import { scrollToBottom } from '../libs/utils';
             pageNum,
             data
         });
+        // 加载完，修改状态，移除 loading
+        MoreLoading.remove(oListWrapper);
         oListWrapper.innerHTML += NewsListTpl;
+        config.isLoading = false;
 
         // 显示图片
         NewsList.imgShow();
@@ -72,13 +79,23 @@ import { scrollToBottom } from '../libs/utils';
 
     function getMoreList() {
         // isLoading: false 代表没有锁住，true 代表锁住了
-        if(!config.isLoading) {
-            config.isLoading = true;
-            console.log('react bottom');
-
-            setTimeout(() => {
-                config.isLoading = false;
-            },3000);
+        if (!config.isLoading) {
+            // 拿分页数据
+            config.pageNum++;
+            // question
+            clearTimeout(t);
+            const { pageNum, type } = config;
+            if (pageNum >= newsData[type].length) {
+                // 显示没有更多新闻
+                MoreLoading.add(oListWrapper, false);
+            } else {
+                // 锁住
+                config.isLoading = true;
+                MoreLoading.add(oListWrapper, true);
+                t = setTimeout(() => {
+                    setNewsList();
+                }, 1000);
+            }
         }
     }
 

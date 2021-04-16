@@ -25,7 +25,7 @@ function setPageData(data, count) {
 
 function scrollToBottom(callback) {
     // 误差值
-    if(_getScrollTop() + _getWindowHeight() >= _getScrollHeight() - 5) {
+    if(_getScrollTop() + _getWindowHeight() >= _getScrollHeight() - 100) {
         callback();
     }
 }

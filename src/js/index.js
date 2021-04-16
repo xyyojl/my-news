@@ -47,6 +47,7 @@ import { scrollToBottom } from '../libs/utils';
             // 已经请求过接口，从缓存池里拿数据
             console.log('pool');
             renderList(newsData[type][pageNum]);
+            console.log('应该是走这里把');
             return;
         }
         console.log('request');
@@ -72,6 +73,7 @@ import { scrollToBottom } from '../libs/utils';
         // 加载完，修改状态，移除 loading
         MoreLoading.remove(oListWrapper);
         oListWrapper.innerHTML += NewsListTpl;
+        console.log('这里执行了');
         config.isLoading = false;
 
         // 显示图片
@@ -86,7 +88,9 @@ import { scrollToBottom } from '../libs/utils';
             // question
             clearTimeout(t);
             const { pageNum, type } = config;
-            if (pageNum >= newsData[type].length) {
+            if(!Array.isArray(newsData[type])) return;
+            let len = newsData[type].length;
+            if (len && pageNum >= len) { 
                 // 显示没有更多新闻
                 MoreLoading.add(oListWrapper, false);
             } else {

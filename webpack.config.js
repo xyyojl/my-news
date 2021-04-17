@@ -4,13 +4,13 @@ const HtmlWepackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     // 模式：开发 development | 生产 production
-    mode: 'development',
+    mode: 'production',
     // source-map
-    devtool: 'source-map',
+    // devtool: 'source-map',
     // 优化，禁止压缩 最小化
-    optimization: {
+    /* optimization: {
         minimize: false
-    },
+    }, */
     // 入口文件 多文件入口
     entry: {
         // 当前文件夹下的 src
